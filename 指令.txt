@@ -1,0 +1,67 @@
+■建立新專案
+conda create --name django_env python=3.9------安裝最簡版本
+
+django-admin startproject (這裡打專案名稱)
+
+python manage.py runserver
+
+python manage.py startapp user------新增功能
+
+
+setting:
+LANGUAGE_CODE = "zh-Hant"
+TIME_ZONE = "Asia/Taipei"
+
+
+python manage.py migrate------更新資料庫
+python manage.py createsuperuser---建立超級使用者
+
+
+
+■重新建立資料表(修改也要)
+python manage.py makemigrations
+python manage.py migrate
+
+
+ 
+
+■上傳render
+pip install gunicorn
+pip freeze > requirements.txt  (確認版本)
+
+render:start command:  $gunicorn todolist.wsgi(找到設定檔目錄,進行啟動)
+
+
+setting:
+DEBUG=False   
+ALLOWED_HOSTS=['*']
+
+render:Deploy latest commit (上發佈最新版本)
+
+AWS:點選VPC安全群組 >>> 傳入規則 >>> 編輯傳入規則{類型:所有流量,來源:隨處IPv4}    (讓所有人可以連進來的規則)
+
+
+
+
+■蒐集所有靜態檔案到特定目錄 (不然admin畫面會很陽春)
+setting: 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+python manage.py collectstatic  (產生目錄)
+
+
+urls.py:
+from django.conf.urls.static import static
+from . import settings
+
+urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+
+
+pip install whitenoise------安裝django white noise
+
+setting:
+MIDDLEWARE: "whitenoise.middleware.WhiteNoiseMiddleware" (增加)
+
+
+requiremebts.txt:
+whitenoise==6.4.0  (手動增加)
